@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_people"
-        android:name="com.faizal.shadab.firebasechatapp.ui.home.PeopleFragment"
+        android:name="com.faizal.shadab.firebasechatapp.ui.people.PeopleFragment"
         android:label="@string/people"
         tools:layout="@layout/fragment_people" />
 
     <fragment
         android:id="@+id/navigation_my_account"
-        android:name="com.faizal.shadab.firebasechatapp.ui.dashboard.MyAccountFragment"
+        android:name="com.faizal.shadab.firebasechatapp.ui.myaccount.MyAccountFragment"
         android:label="@string/my_account"
         tools:layout="@layout/fragment_account" />
 

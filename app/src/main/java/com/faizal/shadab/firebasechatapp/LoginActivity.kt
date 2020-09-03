@@ -5,18 +5,21 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.faizal.shadab.firebasechatapp.firebaseUtil.FireStoreUtil
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.design.longSnackbar
+import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 
 class LoginActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 1
-    val providers = arrayListOf(
+    private val providers = arrayListOf(
         AuthUI.IdpConfig.EmailBuilder().build())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,18 +41,20 @@ class LoginActivity : AppCompatActivity() {
 
             if(resultCode == Activity.RESULT_OK){
                 val progressDialog = indeterminateProgressDialog("Setting up your account")
-                //TODO: Initialize current user in Firestore
-                startActivity(intentFor<MainActivity>().newTask().clearTask())
-                progressDialog.dismiss()
+                FireStoreUtil.initCurrentUserIfFirstTime {
+                    startActivity(intentFor<MainActivity>().newTask().clearTask())
+                    progressDialog.dismiss()
+                }
+
             }else{
                 if(resultCode == Activity.RESULT_CANCELED){
                     if(response == null) return;
 
                     when (response.error?.errorCode) {
                         ErrorCodes.NO_NETWORK ->
-                            Toast.makeText(this, "Network Error", Toast.LENGTH_LONG).show()
+                            constraint_layout.longSnackbar("Network Error")
                         ErrorCodes.UNKNOWN_ERROR ->
-                            Toast.makeText(this, "Unknown Error", Toast.LENGTH_LONG).show()
+                            constraint_layout.longSnackbar("Unknown Error")
                     }
                 }
             }

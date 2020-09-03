@@ -1,4 +1,4 @@
-package com.faizal.shadab.firebasechatapp.ui.dashboard
+package com.faizal.shadab.firebasechatapp.ui.people
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.faizal.shadab.firebasechatapp.R
 
-class MyAccountFragment : Fragment() {
+class PeopleFragment : Fragment() {
 
-    private lateinit var myAccountViewModel: MyAccountViewModel
+    private lateinit var peopleViewModel: PeopleViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        myAccountViewModel =
-                ViewModelProviders.of(this).get(MyAccountViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_account, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        myAccountViewModel.text.observe(viewLifecycleOwner, Observer {
+        peopleViewModel =
+                ViewModelProviders.of(this).get(PeopleViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_people, container, false)
+        val textView: TextView = root.findViewById(R.id.text_home)
+        peopleViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

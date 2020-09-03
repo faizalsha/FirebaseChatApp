@@ -13,5 +13,7 @@ class SplashActivity : AppCompatActivity() {
             startActivity<LoginActivity>()
         else
             startActivity<MainActivity>()
+
+        finish()
     }
 }
