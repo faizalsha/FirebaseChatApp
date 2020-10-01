@@ -9,14 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.faizal.shadab.firebasechatapp.AppConstant
+import com.faizal.shadab.firebasechatapp.ChatActivity
 import com.faizal.shadab.firebasechatapp.R
 import com.faizal.shadab.firebasechatapp.firebaseUtil.FireStoreUtil
+import com.faizal.shadab.firebasechatapp.recyclerview.PersonItem
 import com.google.firebase.firestore.ListenerRegistration
 import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.OnItemClickListener
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_people.*
+import org.jetbrains.anko.appcompat.v7.Appcompat
+import org.jetbrains.anko.support.v4.startActivity
 
 class PeopleFragment : Fragment() {
 
@@ -60,19 +66,27 @@ class PeopleFragment : Fragment() {
                 adapter = GroupAdapter<ViewHolder>().apply {
                     peopleSection = Section(items)
                     add(peopleSection)
+                    setOnItemClickListener(onItemClickListener)
                 }
             }
             shouldInitRecyclerView = false
         }
 
-        fun updateItems() {
-
-        }
+        fun updateItems() = peopleSection.update(items)
 
         if (shouldInitRecyclerView)
             init()
         else
             updateItems()
 
+    }
+
+    private val onItemClickListener = OnItemClickListener{item, view ->
+        if(item is PersonItem){
+            startActivity<ChatActivity>(
+                AppConstant.USER_NAME to item.person.name,
+                AppConstant.USER_ID to item.userId
+            )
+        }
     }
 }

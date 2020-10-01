@@ -10,8 +10,9 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_person.view.*
 
 class PersonItem(
-    private val person: User,
-    private val context: Context
+    val person: User,
+    val userId: String,
+    val context: Context
 ): Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.apply {
