@@ -3,10 +3,7 @@ package com.faizal.shadab.firebasechatapp.firebaseUtil
 import android.content.Context
 import android.util.Log
 import com.faizal.shadab.firebasechatapp.AppConstant
-import com.faizal.shadab.firebasechatapp.model.ChatChannel
-import com.faizal.shadab.firebasechatapp.model.MessageType
-import com.faizal.shadab.firebasechatapp.model.TextMessage
-import com.faizal.shadab.firebasechatapp.model.User
+import com.faizal.shadab.firebasechatapp.model.*
 import com.faizal.shadab.firebasechatapp.recyclerview.PersonItem
 import com.faizal.shadab.firebasechatapp.recyclerview.TextMessageItem
 import com.google.firebase.auth.FirebaseAuth
@@ -123,5 +120,11 @@ object FireStoreUtil {
                 }
                 onListen(items)
             }
+    }
+
+    fun sendMessage(message: Message, channelId: String){
+        chatChannelCollectionRef.document(channelId)
+            .collection(AppConstant.messages)
+            .add(message)
     }
 }
