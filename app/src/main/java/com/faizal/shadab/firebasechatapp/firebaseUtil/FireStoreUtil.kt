@@ -1,10 +1,14 @@
 package com.faizal.shadab.firebasechatapp.firebaseUtil
 
+import android.content.Context
 import android.util.Log
 import com.faizal.shadab.firebasechatapp.model.User
+import com.faizal.shadab.firebasechatapp.recyclerview.PersonItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import com.xwray.groupie.kotlinandroidextensions.Item
 import java.lang.NullPointerException
 
 object FireStoreUtil {
@@ -48,4 +52,23 @@ object FireStoreUtil {
                 onComplete(it.toObject(User::class.java))
             }
     }
+
+    fun addUsersListener(context: Context, onListen: (List<Item>) -> Unit): ListenerRegistration {
+        return fireStoreInstance.collection("user")
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                if (firebaseFirestoreException != null) {
+                    Log.e("FIRESTORE", "Users listener error.", firebaseFirestoreException)
+                    return@addSnapshotListener
+                }
+
+                val items = mutableListOf<Item>()
+                querySnapshot?.documents?.forEach {
+                    if (it.id != FirebaseAuth.getInstance().currentUser?.uid)
+                        items.add(PersonItem(it.toObject(User::class.java)!!, context))
+                }
+                onListen(items)
+            }
+    }
+    //todo : check whether this acutally remove the listener as the listener pass by copy
+    fun removeListener(registration: ListenerRegistration) = registration.remove()
 }
